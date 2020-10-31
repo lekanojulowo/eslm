@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Ekiti State Land Management Portal">
+  <meta name="author" content="Ekiti State Land Management Agency">
+  <link rel="icon" href="assets/images/favicon.ico">
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/bootstrap-vue.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <title>Ekiti State Land Management</title>
+</head>
+
+<body>
+  <div id="app" class="position-relative overflow-hidden">
+    <b-overlay :show="loading" bg-color="black" opacity="0.85" spinner-variant="success" blur="none">
+      <template #overlay>        
+        <h5 class="text-success">Please wait. Processing... <b-spinner variant="success" label="processing"></b-spinner></h5>
+      </template>
+      <main-navbar></main-navbar>
+      <router-view></router-view>
+
+      <main-footer></main-footer>
+    </b-overlay>
+  </div>
+
+  <script src="assets/js/vue.js"></script>
+  <script src="assets/js/vuex.min.js"></script>
+  <script src="assets/js/vue-router.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/portal-vue.umd.min.js"></script>
+  <script src="assets/js/bootstrap-vue-icons.min.js"></script>
+  <script src="assets/js/bootstrap-vue.min.js"></script>
+  <script src="assets/js/axios.min.js"></script>
+  <script src="assets/js/uuidv4.min.js"></script>
+  <script src="assets/js/jspdf.js"></script>
+  <script src="assets/js/dataurl.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/components.js"></script>
+
+  <script>
+    // Routes
+    const routes = [{
+      path: '/',
+      component: PageIndex
+    }, {
+      path: '/application',
+      component: ApplicationForm,
+    }, {
+      path: '/loans',
+      component: PageLoans,
+    }, {
+      path: '/empowerments',
+      component: PageEmpowerments,
+    }, {
+      path: '/projects',
+      component: PageProjects,
+    }, {
+      path: '/applicant',
+      component: ApplicantPage,
+      children: [{
+        path: '',
+        component: ApplicantDashboard,
+      }, {
+        path: 'edt',
+        component: ApplicationForm,
+      }, {
+        path: 'pwd',
+        component: ChangePasswd,
+      }, {
+        path: 'olt',
+        component: OfferLetter,
+      }],
+    }, {
+      path: '/admin',
+      component: AdminPage,
+      children: [{
+        path: '',
+        component: AdminDashboard
+      }, {
+        path: 'applicants',
+        component: ApplicantSettings,
+      }, {
+        path: 'admins',
+        component: AdminSettings,
+      }, {
+        path: 'pwd',
+        component: ChangePasswd,
+      }]
+    }, {
+      path: '*',
+      component: Page404,
+    }, ]
+
+    // Initialize Router
+    const router = new VueRouter({
+      routes
+    })
+
+    Vue.component('password-input', PasswordInput);
+    Vue.component('top-navbar', TopNavbar);
+    Vue.component('main-navbar', MainNavbar);
+    Vue.component('page-index', PageIndex);
+    Vue.component('main-footer', MainFooter);
+    Vue.component('show-alert', ShowAlert);
+    Vue.component('application-form', ApplicationForm);
+    Vue.component('offer-letter', OfferLetter);
+    Vue.component('applicant-dashboard', ApplicantDashboard);
+    Vue.component('applicant-page', ApplicantPage);
+    Vue.component('change-passwd', ChangePasswd);
+    Vue.component('admin-page', AdminPage);
+    Vue.component('admin-dashboard', AdminDashboard);
+    Vue.component('applicant-settings', ApplicantSettings);
+    Vue.component('page-404', Page404);
+
+
+    const App = new Vue({
+      el: '#app',
+      store,
+      router,
+      computed: {
+        ...mapState(['loading', 'login', 'curUser'])
+      },
+    })
+  </script>
+</body>
+
+</html>
